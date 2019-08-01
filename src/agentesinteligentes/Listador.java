@@ -6,27 +6,26 @@
 package agentesinteligentes;
 
 import jade.core.Agent;
-import jade.core.behaviours.SimpleBehaviour;
-import jade.lang.acl.ACLMessage;
+import jade.core.behaviours.TickerBehaviour;
 
 /**
  *
- * @author CIEDUCAR
+ * @author carlo
  */
-public class Verificador extends Agent{
+public class Listador {
+    //TickerBehaviours
     protected void setup(){
         
     }
     
-    class validarID extends SimpleBehaviour{
+    class ActualizarLista extends TickerBehaviour{
 
-        @Override
-        public void action() {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        public ActualizarLista(Agent a, long period) {
+            super(a, period);
         }
 
         @Override
-        public boolean done() {
+        protected void onTick() {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
         

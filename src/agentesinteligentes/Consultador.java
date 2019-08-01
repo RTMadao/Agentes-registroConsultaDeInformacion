@@ -5,22 +5,18 @@
  */
 package agentesinteligentes;
 
-import jade.core.Agent;
 import jade.core.behaviours.SimpleBehaviour;
-import vista.Listar;
 
 /**
  *
- * @author Estudiante
+ * @author carlo
  */
-public class Guardador extends Agent{
-    
+public class Consultador {
     protected void setup(){
-        Listar ventanaGuardar = new Listar();
-        ventanaGuardar.setVisible(true);
-    }  
+        
+    }
     
-    class Guardar extends SimpleBehaviour{
+    class Consultar extends SimpleBehaviour{
 
         @Override
         public void action() {
@@ -33,4 +29,5 @@ public class Guardador extends Agent{
         }
         
     }
+    
 }

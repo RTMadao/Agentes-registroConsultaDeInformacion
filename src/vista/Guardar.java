@@ -261,9 +261,6 @@ public class Guardar extends javax.swing.JFrame {
             }
         });
         jScrollPane3.setViewportView(tabla_direccion);
-        if (tabla_direccion.getColumnModel().getColumnCount() > 0) {
-            tabla_direccion.getColumnModel().getColumn(1).setHeaderValue("tipo");
-        }
 
         jButton2.setText("agregar direccion");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
