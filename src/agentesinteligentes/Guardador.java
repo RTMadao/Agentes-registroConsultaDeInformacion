@@ -6,7 +6,15 @@
 package agentesinteligentes;
 
 import jade.core.Agent;
+import jade.core.behaviours.CyclicBehaviour;
 import jade.core.behaviours.SimpleBehaviour;
+import jade.lang.acl.ACLMessage;
+import jade.lang.acl.UnreadableException;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import modelo.Persona;
+import persistencia.OperacionesBD;
 import vista.Listar;
 
 /**
@@ -16,21 +24,29 @@ import vista.Listar;
 public class Guardador extends Agent{
     
     protected void setup(){
-        Listar ventanaGuardar = new Listar();
-        ventanaGuardar.setVisible(true);
+        System.out.println("vamos a guardar");
+        addBehaviour(new Guardar());
     }  
     
-    class Guardar extends SimpleBehaviour{
+    class Guardar extends CyclicBehaviour{
 
         @Override
         public void action() {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            ACLMessage msg = receive();
+            if (msg != null) {
+                OperacionesBD db = OperacionesBD.getInstance();
+                try {
+                    Persona datos = (Persona) msg.getContentObject();
+                    System.out.println("guardando registro de..."+datos.getNombre());
+                    db.guardar(datos);
+                } catch (UnreadableException ex) {
+                    Logger.getLogger(Verificador.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(Guardador.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }else{
+                block();
+            } 
         }
-
-        @Override
-        public boolean done() {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
-        
     }
 }

@@ -5,6 +5,7 @@
  */
 package vista;
 
+import agentesinteligentes.Capturador;
 import javax.swing.JFrame;
 
 /**
@@ -92,7 +93,7 @@ public class Listar extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        new Guardar().setVisible(true);
+        Capturador.ventana.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 

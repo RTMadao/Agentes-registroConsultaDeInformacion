@@ -4,8 +4,10 @@
  * and open the template in the editor.
  */
 package vista;
+import agentesinteligentes.Capturador;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import modelo.Persona;
 
  
 
@@ -15,12 +17,24 @@ public class Guardar extends javax.swing.JFrame {
         DefaultTableModel tabladireccion; //tabla en el frame
         Object[] dato_usuarios = new Object[2];// array para guardar
         Object[] Direccion_usuarios = new Object[2];//array para guardar
+        
+        private static Persona personaGuardar = null;
            
     
     public Guardar() {
         initComponents();
+        this.setTitle("Guardar");
         tabla = (DefaultTableModel) tusuario.getModel();    //iniciando tabla
         tabladireccion = (DefaultTableModel) tabla_direccion.getModel();//
+    }
+    
+    public Persona getDatos(){
+        System.out.println(this.personaGuardar);
+        return this.personaGuardar;
+    }
+    
+    public void setDatos(Persona p){
+        this.personaGuardar = p;
     }
 
     /**
@@ -432,10 +446,8 @@ public class Guardar extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        
-        
-        
-        
+        this.personaGuardar = new Persona("123", "a", "b", "Masculino", "2000-10-02");
+        Capturador.b = true;
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed

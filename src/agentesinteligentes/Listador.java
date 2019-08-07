@@ -6,28 +6,38 @@
 package agentesinteligentes;
 
 import jade.core.Agent;
+import jade.core.behaviours.CyclicBehaviour;
 import jade.core.behaviours.TickerBehaviour;
+import jade.domain.introspection.AddedBehaviour;
+import javax.swing.JFrame;
+import modelo.Comunicar;
+import vista.Listar;
 
 /**
  *
  * @author carlo
  */
-public class Listador {
+public class Listador extends Agent{
+    
+    public static JFrame ventana;
+    static Agent esteAgente;
+    
     //TickerBehaviours
     protected void setup(){
-        
+        System.out.println("vamos a listar");
+        Listador.ventana = new Listar();
+        Listador.ventana.setVisible(true);
+        Listador.esteAgente = this;
+        addBehaviour(new ActualizarLista());
     }
     
-    class ActualizarLista extends TickerBehaviour{
-
-        public ActualizarLista(Agent a, long period) {
-            super(a, period);
-        }
+    class ActualizarLista extends CyclicBehaviour{
 
         @Override
-        protected void onTick() {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        public void action() {
+            if(Listador.ventana.isVisible()){
+                addBehaviour(new Comunicar("Consultar", "listar", Listador.esteAgente));
+            }
         }
-        
     }
 }
