@@ -6,19 +6,53 @@
 package vista;
 
 import agentesinteligentes.Capturador;
+import agentesinteligentes.Listador;
+import jade.core.Agent;
+import java.util.ArrayList;
 import javax.swing.JFrame;
+import javax.swing.table.DefaultTableModel;
+import modelo.Persona;
 
 /**
  *
  * @author carlo
  */
 public class Listar extends javax.swing.JFrame {
+    
+    public ArrayList<Persona> listaRegistros;
+    private Listador agente;
 
     /**
      * Creates new form Listar
      */
-    public Listar() {
+    public Listar(Listador a) {
         initComponents();
+        this.agente = a;
+        a.disparar();
+    }
+    
+    public void actualizarArray(){
+        this.agente.disparar();
+    }
+    
+    public void llenarTabla(){
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("Documento");
+        modelo.addColumn("Nombre");
+        modelo.addColumn("Apellido");
+        modelo.addColumn("Genero");
+        modelo.addColumn("FechaNacimiento");
+        this.jTable1.setModel(modelo);
+        String [] datos = new String[5];
+        for (Persona registro : this.listaRegistros) {
+            datos[0]= registro.getDocumento();
+            datos[1]= registro.getNombre();
+            datos[2]= registro.getApellido();
+            datos[3]= registro.getGenero();
+            datos[4]= registro.getFechaNacimiento();
+            modelo.addRow(datos);
+        }
+        this.jTable1.setModel(modelo);
     }
 
     /**
@@ -34,7 +68,7 @@ public class Listar extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        txtDatoConsulta = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -62,6 +96,12 @@ public class Listar extends javax.swing.JFrame {
             }
         });
 
+        txtDatoConsulta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDatoConsultaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -71,7 +111,7 @@ public class Listar extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jButton2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtDatoConsulta, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addContainerGap())
@@ -83,7 +123,7 @@ public class Listar extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDatoConsulta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -99,9 +139,15 @@ public class Listar extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        new Consultar().setVisible(true);
+        Capturador.ventanaConsulta.datoConsulta = this.txtDatoConsulta.getText();
+        Capturador.ventanaConsulta.disparar();
+        Capturador.ventanaConsulta.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void txtDatoConsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDatoConsultaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDatoConsultaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -133,7 +179,7 @@ public class Listar extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Listar().setVisible(true);
+                new Listar(null).setVisible(true);
             }
         });
     }
@@ -143,6 +189,6 @@ public class Listar extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField txtDatoConsulta;
     // End of variables declaration//GEN-END:variables
 }

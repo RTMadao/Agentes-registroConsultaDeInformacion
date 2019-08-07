@@ -79,6 +79,21 @@ public class OperacionesBD {
       return personas;
    }
     
+    public Persona buscar(String documento) throws SQLException {
+      Persona persona = null;
+      try{
+         PreparedStatement consulta = (PreparedStatement) conexion.prepareStatement("SELECT * FROM " + this.TablaPERSONA + " WHERE Documento = ?" );
+         consulta.setString(1, documento);
+         ResultSet resultado = consulta.executeQuery();
+         while(resultado.next()){
+            persona = new Persona(resultado.getString("Documento"), resultado.getString("Nombre"), resultado.getString("Apellido"), resultado.getString("genero"), resultado.getString("FechaNacimiento"));
+         }
+      }catch(SQLException ex){
+         throw new SQLException(ex);
+      }
+      return persona;
+   }
+    
     public static OperacionesBD getInstance() {
         if(OperacionesBD.instancia == null){
             OperacionesBD.instancia = new OperacionesBD();

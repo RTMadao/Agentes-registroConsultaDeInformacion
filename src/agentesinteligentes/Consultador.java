@@ -11,16 +11,25 @@ import jade.core.behaviours.SimpleBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import modelo.Comunicar;
+import modelo.Persona;
+import persistencia.OperacionesBD;
 
 /**
  *
  * @author carlo
  */
 public class Consultador extends Agent{
+    
+    static Agent esteAgente;
+    
     protected void setup(){
         System.out.println("a consultar");
+        Consultador.esteAgente = this;
         addBehaviour(new ConsultarID());
     }
     
@@ -31,24 +40,21 @@ public class Consultador extends Agent{
             String IDConsultar="nada";
             ACLMessage msg = receive();
             if (msg != null) {
+                OperacionesBD db = OperacionesBD.getInstance();
                 try {
                     IDConsultar = (String) msg.getContentObject();
-                    
-                    ACLMessage respuesta = msg.createReply();
-                    String persona = "si";
-                    if(persona != null){
-                        respuesta.setPerformative(ACLMessage.PROPOSE);
-                        respuesta.setContentObject("existe");
+                    if(IDConsultar == null){
+                        ArrayList<Persona>lista = db.recuperarTodas();
+                        addBehaviour(new Comunicar("Listar", lista, Consultador.esteAgente));
                     }else{
-                        respuesta.setPerformative(ACLMessage.REFUSE);
-                        respuesta.setContentObject("no existe");
+                        Persona registro = db.buscar(IDConsultar);
+                        Capturador.ventanaConsulta.datos = registro;
+                        Capturador.ventanaConsulta.llenar();
                     }
-                    send(respuesta);
-                    
                 } catch (UnreadableException ex) {
-                    Logger.getLogger(Verificador.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IOException ex) {
                     Logger.getLogger(Consultador.class.getName()).log(Level.SEVERE, null, ex);
+                }catch (SQLException ex) {
+                        Logger.getLogger(Consultador.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }else{
                 block();
