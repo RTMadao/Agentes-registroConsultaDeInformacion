@@ -53,6 +53,7 @@ public class Listar extends javax.swing.JFrame {
             modelo.addRow(datos);
         }
         this.jTable1.setModel(modelo);
+        this.listaRegistros = null;
     }
 
     /**

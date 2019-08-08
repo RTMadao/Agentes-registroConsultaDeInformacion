@@ -7,13 +7,16 @@ package vista;
 import agentesinteligentes.Capturador;
 import agentesinteligentes.Listador;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import modelo.Direccion;
 import modelo.Persona;
+import modelo.Telefono;
 
  
 
@@ -21,7 +24,9 @@ public class Guardar extends javax.swing.JFrame {
 
         DefaultTableModel tabla;//tabla en el frame
         DefaultTableModel tabladireccion; //tabla en el frame
-        Object[] dato_usuarios = new Object[2];// array para guardar
+        ArrayList<Telefono> listaTelefono;
+        ArrayList<Direccion> listaDireccion;
+        ArrayList<String> listaCorreo;
         Object[] Direccion_usuarios = new Object[2];//array para guardar
         
         private static Persona personaGuardar = null;
@@ -30,10 +35,13 @@ public class Guardar extends javax.swing.JFrame {
     
     public Guardar(Capturador c) {
         initComponents();
+        this.listaTelefono = new ArrayList<Telefono>();
+        this.listaDireccion = new ArrayList<Direccion>();
+        this.listaCorreo = new ArrayList<String>();
         this.setTitle("Guardar");
         this.capturaDatos = c;
-        tabla = (DefaultTableModel) tusuario.getModel();    //iniciando tabla
-        tabladireccion = (DefaultTableModel) tabla_direccion.getModel();//
+        tabla = (DefaultTableModel) tTelefono.getModel();    //iniciando tabla
+        tabladireccion = (DefaultTableModel) tDireccion.getModel();//
     }
     
     public Persona getDatos(){
@@ -78,7 +86,7 @@ public class Guardar extends javax.swing.JFrame {
         Text_telefono = new javax.swing.JTextField();
         Tex_tipotel = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tusuario = new javax.swing.JTable();
+        tTelefono = new javax.swing.JTable();
         jButton3 = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
@@ -86,13 +94,13 @@ public class Guardar extends javax.swing.JFrame {
         ciudad = new javax.swing.JTextField();
         direccion = new javax.swing.JTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
-        tabla_direccion = new javax.swing.JTable();
+        tDireccion = new javax.swing.JTable();
         jButton2 = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
-        jTextField11 = new javax.swing.JTextField();
+        txtcorreo = new javax.swing.JTextField();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTable4 = new javax.swing.JTable();
+        tCorreo = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
@@ -192,7 +200,7 @@ public class Guardar extends javax.swing.JFrame {
             }
         });
 
-        tusuario.setModel(new javax.swing.table.DefaultTableModel(
+        tTelefono.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -208,9 +216,9 @@ public class Guardar extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(tusuario);
-        if (tusuario.getColumnModel().getColumnCount() > 0) {
-            tusuario.getColumnModel().getColumn(1).setHeaderValue("tipo");
+        jScrollPane2.setViewportView(tTelefono);
+        if (tTelefono.getColumnModel().getColumnCount() > 0) {
+            tTelefono.getColumnModel().getColumn(1).setHeaderValue("tipo");
         }
 
         jButton3.setText("agregar telefono");
@@ -272,7 +280,7 @@ public class Guardar extends javax.swing.JFrame {
             }
         });
 
-        tabla_direccion.setModel(new javax.swing.table.DefaultTableModel(
+        tDireccion.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -288,7 +296,7 @@ public class Guardar extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane3.setViewportView(tabla_direccion);
+        jScrollPane3.setViewportView(tDireccion);
 
         jButton2.setText("agregar direccion");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -341,7 +349,7 @@ public class Guardar extends javax.swing.JFrame {
 
         jLabel10.setText("correo");
 
-        jTable4.setModel(new javax.swing.table.DefaultTableModel(
+        tCorreo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -357,9 +365,14 @@ public class Guardar extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane4.setViewportView(jTable4);
+        jScrollPane4.setViewportView(tCorreo);
 
         jButton1.setText("agregar correo");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -374,7 +387,7 @@ public class Guardar extends javax.swing.JFrame {
                             .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addComponent(jLabel10)
                                 .addGap(18, 18, 18)
-                                .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(txtcorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(70, 70, 70)
                         .addComponent(jButton1)))
@@ -386,7 +399,7 @@ public class Guardar extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
-                    .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtcorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(13, 13, 13)
                 .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -467,6 +480,9 @@ public class Guardar extends javax.swing.JFrame {
         Date fecha = this.dateCH.getDate();
         SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
         this.personaGuardar = new Persona(documento, nombre, apellido, genero, date.format(fecha));
+        this.personaGuardar.setListaTelefono(listaTelefono);
+        this.personaGuardar.setListaDireccion(listaDireccion);
+        this.personaGuardar.setListaCorreo(listaCorreo);
         this.capturaDatos.dispararDatosGuardar();
         Capturador.b = true;
     }//GEN-LAST:event_jButton4ActionPerformed
@@ -477,11 +493,23 @@ public class Guardar extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
       
-       dato_usuarios[0] = Text_telefono.getText();
-       dato_usuarios[1] = Tex_tipotel.getText();
+       String numeroT = Text_telefono.getText();
+       String tipoT = Tex_tipotel.getText();
+       this.listaTelefono.add(new Telefono(tipoT, numeroT));
        
-       tabla.addRow(dato_usuarios);
-        
+       DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("NºTelefono");
+        modelo.addColumn("Tipo");
+        this.tTelefono.setModel(modelo);
+        String [] datos = new String[2];
+        for (Telefono elemento : this.listaTelefono) {
+            datos[0]= elemento.getNumero();
+            datos[1]= elemento.getTipo();
+            modelo.addRow(datos);
+        }
+        this.tTelefono.setModel(modelo);
+        Text_telefono.setText("");
+       Tex_tipotel.setText("");
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void Text_telefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Text_telefonoActionPerformed
@@ -489,10 +517,24 @@ public class Guardar extends javax.swing.JFrame {
     }//GEN-LAST:event_Text_telefonoActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-       Direccion_usuarios[0] = ciudad.getText();
-       Direccion_usuarios[1] = direccion.getText();
+      
+       String c = ciudad.getText();
+       String d = direccion.getText();
+       this.listaDireccion.add(new Direccion(c, d));
        
-       tabladireccion.addRow(Direccion_usuarios);
+       DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("Ciudad");
+        modelo.addColumn("Direccion");
+        this.tDireccion.setModel(modelo);
+        String [] datos = new String[2];
+        for (Direccion elemento : this.listaDireccion) {
+            datos[0]= elemento.getCiudad();
+            datos[1]= elemento.getDireccion();
+            modelo.addRow(datos);
+        }
+        this.tDireccion.setModel(modelo);
+        ciudad.setText("");
+        direccion.setText("");
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void direccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_direccionActionPerformed
@@ -503,6 +545,23 @@ public class Guardar extends javax.swing.JFrame {
 // TODO add your handling code here:
          cambiarAListar();
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        String c = txtcorreo.getText();
+       this.listaCorreo.add(c);
+       
+       DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("Correo");
+        this.tCorreo.setModel(modelo);
+        String [] datos = new String[2];
+        for (String elemento : this.listaCorreo) {
+            datos[0]= elemento;
+            modelo.addRow(datos);
+        }
+        this.tCorreo.setModel(modelo);
+        txtcorreo.setText("");
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -569,13 +628,13 @@ public class Guardar extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTable jTable4;
-    private javax.swing.JTextField jTextField11;
     private javax.swing.JTextField jTextField2;
-    private javax.swing.JTable tabla_direccion;
-    private javax.swing.JTable tusuario;
+    private javax.swing.JTable tCorreo;
+    private javax.swing.JTable tDireccion;
+    private javax.swing.JTable tTelefono;
     private javax.swing.JTextField txtApellido;
     private javax.swing.JTextField txtDocumento;
     private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtcorreo;
     // End of variables declaration//GEN-END:variables
 }

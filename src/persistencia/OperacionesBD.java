@@ -13,7 +13,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import modelo.Direccion;
 import modelo.Persona;
+import modelo.Telefono;
 
 /**
  *
@@ -42,6 +44,32 @@ public class OperacionesBD {
             insert.setString(5, registro.getFechaNacimiento());
             
             insert.executeUpdate();
+            
+            for (Telefono telefono : registro.getListaTelefono()) {
+                insert = (PreparedStatement) conexion.prepareStatement("INSERT INTO " + this.TablaTELEFONO + " (nTelefono,tipo,dPersona) VALUES (?,?,?)");
+                insert.setString(1, telefono.getNumero());
+                insert.setString(2, telefono.getTipo());
+                insert.setString(3, registro.getDocumento());
+
+                insert.executeUpdate();
+            }
+            
+            for (Direccion direccion : registro.getListaDireccion()) {
+                insert = (PreparedStatement) conexion.prepareStatement("INSERT INTO " + this.TablaDIRECCION + " (ciudad,direccion,dPersona) VALUES (?,?,?)");
+                insert.setString(1, direccion.getCiudad());
+                insert.setString(2, direccion.getDireccion());
+                insert.setString(3, registro.getDocumento());
+
+                insert.executeUpdate();
+            }
+            
+            for (String correo : registro.getListaCorreo()) {
+                insert = (PreparedStatement) conexion.prepareStatement("INSERT INTO " + this.TablaCORREO + " (correo,dPersona) VALUES (?,?)");
+                insert.setString(1, correo);
+                insert.setString(2, registro.getDocumento());
+
+                insert.executeUpdate();
+            }
             
         }catch(SQLException ex){
             throw new SQLException(ex);
@@ -82,12 +110,30 @@ public class OperacionesBD {
     public Persona buscar(String documento) throws SQLException {
       Persona persona = null;
       try{
-         PreparedStatement consulta = (PreparedStatement) conexion.prepareStatement("SELECT * FROM " + this.TablaPERSONA + " WHERE Documento = ?" );
-         consulta.setString(1, documento);
-         ResultSet resultado = consulta.executeQuery();
-         while(resultado.next()){
-            persona = new Persona(resultado.getString("Documento"), resultado.getString("Nombre"), resultado.getString("Apellido"), resultado.getString("genero"), resultado.getString("FechaNacimiento"));
-         }
+        PreparedStatement consulta = (PreparedStatement) conexion.prepareStatement("SELECT * FROM " + this.TablaPERSONA + " WHERE Documento = ?" );
+        consulta.setString(1, documento);
+        ResultSet resultado = consulta.executeQuery();
+        while(resultado.next()){
+           persona = new Persona(resultado.getString("Documento"), resultado.getString("Nombre"), resultado.getString("Apellido"), resultado.getString("genero"), resultado.getString("FechaNacimiento"));
+        }
+        consulta = (PreparedStatement) conexion.prepareStatement("SELECT * FROM " + this.TablaTELEFONO + " WHERE dPersona = ?" );
+        consulta.setString(1, documento);
+        resultado = consulta.executeQuery();
+        while(resultado.next()){
+           persona.getListaTelefono().add(new Telefono (resultado.getString("tipo"), resultado.getString("nTelefono") ));
+        }
+        consulta = (PreparedStatement) conexion.prepareStatement("SELECT * FROM " + this.TablaDIRECCION + " WHERE dPersona = ?" );
+        consulta.setString(1, documento);
+        resultado = consulta.executeQuery();
+        while(resultado.next()){
+           persona.getListaDireccion().add(new Direccion(resultado.getString("ciudad"), resultado.getString("direccion") ));
+        }
+        consulta = (PreparedStatement) conexion.prepareStatement("SELECT * FROM " + this.TablaCORREO + " WHERE dPersona = ?" );
+        consulta.setString(1, documento);
+        resultado = consulta.executeQuery();
+        while(resultado.next()){
+           persona.getListaCorreo().add(resultado.getString("correo"));
+        }
       }catch(SQLException ex){
          throw new SQLException(ex);
       }

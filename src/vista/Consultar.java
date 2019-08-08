@@ -6,7 +6,11 @@
 package vista;
 
 import agentesinteligentes.Capturador;
+import agentesinteligentes.Listador;
+import javax.swing.table.DefaultTableModel;
+import modelo.Direccion;
 import modelo.Persona;
+import modelo.Telefono;
 
 /**
  *
@@ -37,6 +41,38 @@ public class Consultar extends javax.swing.JFrame {
         this.txtApellido.setText(datos.getApellido());
         this.txtGenero.setText(datos.getGenero());
         this.txtFecha.setText(datos.getFechaNacimiento());
+       
+       DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("NºTelefono");
+        modelo.addColumn("Tipo");
+        this.tTelefono.setModel(modelo);
+        String [] datos = new String[2];
+        for (Telefono elemento : this.datos.getListaTelefono()) {
+            datos[0]= elemento.getNumero();
+            datos[1]= elemento.getTipo();
+            modelo.addRow(datos);
+        }
+        this.tTelefono.setModel(modelo);
+        
+        modelo = new DefaultTableModel();
+        modelo.addColumn("Ciudad");
+        modelo.addColumn("Direccion");
+        this.tDireccion.setModel(modelo);
+        for (Direccion elemento : this.datos.getListaDireccion()) {
+            datos[0]= elemento.getCiudad();
+            datos[1]= elemento.getDireccion();
+            modelo.addRow(datos);
+        }
+        this.tDireccion.setModel(modelo);
+        
+        modelo = new DefaultTableModel();
+        modelo.addColumn("Correo");
+        this.tCorreo.setModel(modelo);
+        for (String elemento : this.datos.getListaCorreo()) {
+            datos[0]= elemento;
+            modelo.addRow(datos);
+        }
+        this.tCorreo.setModel(modelo);
     }
 
     /**
@@ -60,11 +96,11 @@ public class Consultar extends javax.swing.JFrame {
         txtNombre = new javax.swing.JTextField();
         txtFecha = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tusuario = new javax.swing.JTable();
+        tTelefono = new javax.swing.JTable();
         jScrollPane3 = new javax.swing.JScrollPane();
-        tabla_direccion = new javax.swing.JTable();
+        tDireccion = new javax.swing.JTable();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTable4 = new javax.swing.JTable();
+        tCorreo = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -161,7 +197,7 @@ public class Consultar extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        tusuario.setModel(new javax.swing.table.DefaultTableModel(
+        tTelefono.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -177,9 +213,9 @@ public class Consultar extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(tusuario);
+        jScrollPane2.setViewportView(tTelefono);
 
-        tabla_direccion.setModel(new javax.swing.table.DefaultTableModel(
+        tDireccion.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -195,9 +231,9 @@ public class Consultar extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane3.setViewportView(tabla_direccion);
+        jScrollPane3.setViewportView(tDireccion);
 
-        jTable4.setModel(new javax.swing.table.DefaultTableModel(
+        tCorreo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -213,7 +249,7 @@ public class Consultar extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane4.setViewportView(jTable4);
+        jScrollPane4.setViewportView(tCorreo);
 
         jButton1.setText("Volver");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -273,7 +309,9 @@ public class Consultar extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        
+        Listador.ventana.setVisible(true);
+        Listador.ventana.actualizarArray();
+        this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
@@ -326,9 +364,9 @@ public class Consultar extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTable jTable4;
-    private javax.swing.JTable tabla_direccion;
-    private javax.swing.JTable tusuario;
+    private javax.swing.JTable tCorreo;
+    private javax.swing.JTable tDireccion;
+    private javax.swing.JTable tTelefono;
     private javax.swing.JTextField txtApellido;
     private javax.swing.JTextField txtDocumnto;
     private javax.swing.JTextField txtFecha;

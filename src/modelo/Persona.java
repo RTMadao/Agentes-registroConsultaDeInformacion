@@ -6,6 +6,7 @@
 package modelo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  *
@@ -18,6 +19,9 @@ public class Persona implements Serializable{
     private String apellido;
     private String genero;
     private String fechaNacimiento;
+    private ArrayList<Telefono> listaTelefono;
+    private ArrayList<Direccion> listaDireccion;
+    private ArrayList<String> listaCorreo;
 
     public Persona(String documento, String nombre, String apellido, String genero, String fechaNacimiento) {
         this.documento = documento;
@@ -25,6 +29,9 @@ public class Persona implements Serializable{
         this.apellido = apellido;
         this.genero = genero;
         this.fechaNacimiento = fechaNacimiento;
+        this.listaTelefono = new ArrayList<Telefono>();
+        this.listaDireccion = new ArrayList<Direccion>();
+        this.listaCorreo = new ArrayList<String>();
     }
 
     public String getDocumento() {
@@ -66,7 +73,28 @@ public class Persona implements Serializable{
     public void setFechaNacimiento(String fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
-    
-    
-    
+
+    public ArrayList<Telefono> getListaTelefono() {
+        return listaTelefono;
+    }
+
+    public void setListaTelefono(ArrayList<Telefono> listaTelefono) {
+        this.listaTelefono = listaTelefono;
+    }
+
+    public ArrayList<Direccion> getListaDireccion() {
+        return listaDireccion;
+    }
+
+    public void setListaDireccion(ArrayList<Direccion> listaDireccion) {
+        this.listaDireccion = listaDireccion;
+    }
+
+    public ArrayList<String> getListaCorreo() {
+        return listaCorreo;
+    }
+
+    public void setListaCorreo(ArrayList<String> listaCorreo) {
+        this.listaCorreo = listaCorreo;
+    }
 }
